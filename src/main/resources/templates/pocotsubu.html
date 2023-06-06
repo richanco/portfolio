@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>PocoTsubu</title>
+</head>
+<body>
+  <h1>PocoTsubu</h1>
+    <form action="" th:attr="action=@{/hello/tweet}" th:object="${tweetRequest}" method="post">
+       <input th:type="text"></input>
+       <input th:type="submit" value="つぶやく"></input>
+    </form>
+    <table class="list">
+        <tr th:each="list:${list}">
+           <td th:text=$"{list.tweet}"></td>
+        </tr>
+    </table>
+</body>
+</html>
