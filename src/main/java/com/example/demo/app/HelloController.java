@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.app;
 
 import java.util.List;
 import java.util.Map;
@@ -11,17 +11,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.examle.demo.model.AccountData;
-import com.examle.demo.model.LoginData;
-import com.examle.demo.model.TweetData;
+import com.example.demo.entity.TweetData;
+import com.example.demo.model.AccountData;
+import com.example.demo.model.LoginData;
 
 @RequestMapping("hello/*")
 @Controller
 public class HelloController {
-	@GetMapping("world")
+	@GetMapping("/world")
 	  public String open(Model model) {
 	    String str = "PocoTsubu(仮)";
 	    model.addAttribute("value", str);
@@ -29,7 +28,7 @@ public class HelloController {
 	  }
 	
 	///ログイン画面を表示
-	@PostMapping("login")
+	@PostMapping("/login")
 	  public String login(@ModelAttribute LoginData loginData,Model model, RedirectAttributes attributes) {
 		  //nullPointerExceptionにならないように
 		if(loginData.getId() == 12345 && ( "chanrihomaromaro".equals(loginData.getPassword()))) { 
@@ -42,26 +41,31 @@ public class HelloController {
 	}
 	
 	///tweet画面を表示
-	@PostMapping("account")
+	@PostMapping("/account")
 	  public String account(@ModelAttribute AccountData accountData, Model model) {
 		 return "redirect:/hello/pocotsubu";
 	}
 	
     ///サーバー接続時のテーブルデータの表示
 	@Autowired
+
 	private JdbcTemplate jdbcTemplate;
 	@GetMapping("/pocotsubu")
 	public String pocotsubu(Model model) {
 		String sql = "SELECT * FROM tweet_table";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-        model.addAttribute("testList", list);
+        model.addAttribute("tweetList", list);
 		return "pocotsubu";
 	}
 	
-	@RequestMapping(value="/hello/tweet",method = RequestMethod.POST)
-	public String tweet(@ModelAttribute TweetData tweetData ,Model model) {
-		return "redirect:/hello/tweet" ;
+	@PostMapping("/pocotsubu")
+	public String pocotsubu(Model model,
+			TweetData tweetRequest ,
+			RedirectAttributes redirectAttribute) {
+		String sql = "INSERT INTO tweet_table(tweet) VALUES (?)";           
+		jdbcTemplate.update(sql,tweetRequest.getTweet());
+		//redirect
+		return "redirect:/hello/pocotsubu";
 	}
-	
-	
+
 }

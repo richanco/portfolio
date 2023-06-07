@@ -1,4 +1,4 @@
-package com.examle.demo.model;
+package com.example.demo.model;
 
 public class LoginData {
 	private long id;

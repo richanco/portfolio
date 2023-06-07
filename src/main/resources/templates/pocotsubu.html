@@ -6,13 +6,13 @@
 </head>
 <body>
   <h1>PocoTsubu</h1>
-    <form action="" th:attr="action=@{/hello/tweet}" th:object="${tweetRequest}" method="post">
-       <input th:type="text"></input>
+    <form method="post"  th:action=@{/hello/pocotsubu} th:object="${tweetRequest}" >
+       <input th:type="text" name="tweet"></input>
        <input th:type="submit" value="つぶやく"></input>
     </form>
     <table class="list">
-        <tr th:each="list:${list}">
-           <td th:text=$"{list.tweet}"></td>
+        <tr th:each = "data: ${tweetList}">
+           <td th:text= "${data.tweet}"></td>
         </tr>
     </table>
 </body>

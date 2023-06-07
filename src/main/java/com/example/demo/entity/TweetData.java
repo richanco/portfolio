@@ -1,4 +1,4 @@
-package com.examle.demo.model;
+package com.example.demo.entity;
 
 public class TweetData {
 	private String tweet;
